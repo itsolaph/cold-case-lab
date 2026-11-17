@@ -1,0 +1,29 @@
+{
+  "name": "cold-case-lab",
+  "private": true,
+  "version": "1.0.0",
+  "description": "A one-case detective game where routing is the gameplay: interrogate on-device, send evidence to a rationed cloud lab.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "e2e": "node scripts/e2e.mjs",
+    "shoot": "node scripts/shoot.mjs",
+    "exhibits": "node scripts/make-exhibits.mjs"
+  },
+  "dependencies": {
+    "firebase": "^13.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "jsdom": "^31.0.1",
+    "playwright-core": "^1.65.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.0"
+  }
+}
