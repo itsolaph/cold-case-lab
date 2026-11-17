@@ -17,8 +17,8 @@ You question four people in an interview room. Their answers come from Gemini Na
   - A 69-event door-controller log.
   - A photographed till receipt.
   - The guard's two-page statement.
-- **Pressure:** everyone has a weak point, but they only crack when you name evidence that is **already pinned on your case board**. Naming it without holding it is a bluff, and they will call it.
-- **The lab:** a vague request ("anything suspicious?") gets a vague report. A precise request (a person, a time, a property) gets certified findings, which are pinned to the board.
+- **Pressure:** everyone has a weak point, but they only crack when you name evidence that is **already pinned in your case folder**. Naming it without holding it is a bluff, and they will call it.
+- **The lab:** a vague request ("anything suspicious?") gets a vague report. A precise request (a person, a time, a property) gets certified findings, which are pinned in the case folder.
 - **The accusation:** name the culprit and pick two pinned facts, one proving **means** and one proving **opportunity**. The check is deterministic code, not AI. Confessions can be retracted; lab findings cannot.
 
 The case is fair-play. It can only be solved by combining interrogation with at least two of the three lab calls, and one exhibit is a red herring that wastes a call. The authored case lives in [`src/case/`](src/case/). The solution is in `solution.ts`, if you want spoilers.
@@ -32,7 +32,7 @@ The case is fair-play. It can only be solved by combining interrogation with at 
 | Lab report on an exhibit | **Cloud lab** (Gemini in the cloud) | `ONLY_IN_CLOUD` | Long documents (a 151-row CSV), images (the receipt photo) and careful reasoning. Rationed to 3 calls. |
 | Accusation verdict | **Plain code** | none | The verdict must be exact and reproducible, so no model decides it. |
 
-Every answer and report carries a route chip (`ON DEVICE · 412 ms`, `REMOTE LINE · 2.1 s`, `CLOUD LAB · 5.8 s`) built from the SDK's `response.inferenceSource` and measured latency. The header counts questions answered on device next to lab requests left.
+Every answer and report carries a route note ("On this device, 412 ms", "Remote line, 2.1 s", "Lab, 5.8 s"; read aloud as `ON DEVICE · 412 ms` and so on) built from the SDK's `response.inferenceSource` and measured latency. The header counts questions answered on device; the tube station counts the canisters (lab requests) left.
 
 ### Models perform, they do not author
 
@@ -120,7 +120,7 @@ The real engine ([`src/ai/firebase-engine.ts`](src/ai/firebase-engine.ts)) and t
 
   Each latency is derived from a hash of the request, so runs are reproducible.
 - **Same output path as a real model.** It returns raw JSON text (the lab reply is wrapped in prose), so the same hardened parsers run.
-- **Never pretends to be Gemini.** A dashed **Demo engine** badge sits in the header, the title screen explains it, and every route chip carries a `demo` mark.
+- **Never pretends to be Gemini.** The header says the demo engine is standing in for Gemini Nano, the title screen explains it, and every route note carries a "(demo)" mark.
 
 ## Tests
 
@@ -138,15 +138,33 @@ The real engine ([`src/ai/firebase-engine.ts`](src/ai/firebase-engine.ts)) and t
 
 ## Design
 
-The interface is a forensic light table in a night crime lab:
+The interface is one room: the station's seed-bank office at night, turned into an interview room. Everything on screen is an object in it.
 
-- **Canvas:** backlit frosted glass with a faint graticule.
-- **Panels:** translucent evidence bags with heat-seal strips. There are two elevation levels.
-- **Colour:** luminol blue for anything cloud or lab, tamper red for seals and the accusation, graphite for on-device.
-- **The loud element:** the **lab docket**, three sealed bags with red tamper tape. Spending a lab request tears the tape, and the bag glows luminol blue while the lab works.
-- **Type:** Archivo (condensed widths) for labels and headers, Source Serif 4 only for what characters say, JetBrains Mono only for exhibit text.
+- **The title:** the empty room photographed at night. The lamp comes up, then the case name settles on the wall.
+- **Left wall:** four staff ID badges on lanyards. The person you are questioning hangs straight and lifted; the mood is a word on label-maker tape.
+- **The table:** a steel desk under one enamel lamp. The interview record is a typed sheet; new answers type on letter by letter, and a red rubber stamp lands in the margin when someone cracks. Your question is the sheet's last line, sent with a round rubber key.
+- **The loud element:** a **brass pneumatic-tube station** on the right wall with a rack of three canisters, one per lab request. Sending a request fires a canister up the tube; the glass glows and glints while the lab works, and the report drops out of the mouth as a pink carbon slip.
+- **Case folder:** a manila folder under the tube. Pinned facts are typed slips under paperclips (pink for lab findings, a red stamp for admissions); the four exhibits are evidence tags tucked in its pocket.
+- **Colour:** painted mint-grey wall, brushed steel, typing paper. Brass is the only signal colour and belongs to the lab. Stamp red appears only as rubber-stamp ink.
+- **Type:** Schibsted Grotesk for everything you read in the interface; Courier Prime only for typed material (the interview record, exhibits, lab slips and the charge sheet's fields).
 
-The layout works down to 390 px with tabs (People, Room, Board, Lab) and respects `prefers-reduced-motion`.
+On phones the same objects stack: the tube station becomes a brass bar across the top, then file-folder tabs (People, Room, Board, Lab). Every animation has a `prefers-reduced-motion` fallback.
+
+### Screenshots
+
+`npm run shoot` writes these to [`shots/`](shots/) at 1440x900 and 390x844 (demo engine):
+
+| | Desktop | Phone |
+| --- | --- | --- |
+| Title | [01-title-desktop](shots/01-title-desktop.png) | [01-title-mobile](shots/01-title-mobile.png) |
+| Interview record | [02-interrogation-desktop](shots/02-interrogation-desktop.png) | [02-interrogation-mobile](shots/02-interrogation-mobile.png) |
+| Case folder | | [02b-board-mobile](shots/02b-board-mobile.png) |
+| Canister at the lab | [03-lab-in-progress-desktop](shots/03-lab-in-progress-desktop.png) | [03-lab-in-progress-mobile](shots/03-lab-in-progress-mobile.png) |
+| Lab report | [04-lab-report-desktop](shots/04-lab-report-desktop.png) | [04-lab-report-mobile](shots/04-lab-report-mobile.png) |
+| Charge sheet | [05a-accuse-dialog-desktop](shots/05a-accuse-dialog-desktop.png) | [05a-accuse-dialog-mobile](shots/05a-accuse-dialog-mobile.png) |
+| Verdict | [05-accusation-result-desktop](shots/05-accusation-result-desktop.png) | [05-accusation-result-mobile](shots/05-accusation-result-mobile.png) |
+
+![Canister at the lab, 1440 px](shots/03-lab-in-progress-desktop.png)
 
 ## Deploy to GitHub Pages
 
@@ -175,9 +193,9 @@ Code, case and exhibits: [Apache License 2.0](LICENSE).
 
 ## Credits
 
-- **Archivo** by the Archivo Project Authors (Omnibus-Type), SIL Open Font License 1.1. See [`public/fonts/OFL-Archivo.txt`](public/fonts/OFL-Archivo.txt).
-- **Source Serif 4** by the Source Serif 4 Project Authors (Adobe), SIL Open Font License 1.1. See [`public/fonts/OFL-SourceSerif4.txt`](public/fonts/OFL-SourceSerif4.txt).
-- **JetBrains Mono** by the JetBrains Mono Project Authors, SIL Open Font License 1.1. See [`public/fonts/OFL-JetBrainsMono.txt`](public/fonts/OFL-JetBrainsMono.txt).
+- **Schibsted Grotesk** by the Schibsted Grotesk Project Authors, SIL Open Font License 1.1, self-hosted from [`@fontsource/schibsted-grotesk`](https://fontsource.org/fonts/schibsted-grotesk). See [`public/fonts/OFL-SchibstedGrotesk.txt`](public/fonts/OFL-SchibstedGrotesk.txt).
+- **Courier Prime** by the Courier Prime Project Authors, SIL Open Font License 1.1, self-hosted from [`@fontsource/courier-prime`](https://fontsource.org/fonts/courier-prime). See [`public/fonts/OFL-CourierPrime.txt`](public/fonts/OFL-CourierPrime.txt).
+- **Photos:** the interview-room photo (`public/img/room.*`) and the four staff badge portraits (`public/img/{mara,felix,sol,ruth}.*`) are AI-generated for this project. They do not show real people.
 - Built with [Firebase AI Logic](https://firebase.google.com/docs/ai-logic), [Vite](https://vite.dev), [Vitest](https://vitest.dev) and [Playwright](https://playwright.dev) (`playwright-core`).
 
 All people, places, companies and phone numbers in the case are fictional.

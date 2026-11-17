@@ -41,7 +41,8 @@ try {
 
     await page.goto(`${server.url}?engine=mock`);
     await page.locator('.cover').waitFor();
-    await shot(page, '01-title', vpName, { settle: 700 });
+    // The lamp comes up and the headline settles in about 1.4 s.
+    await shot(page, '01-title', vpName, { settle: 1600 });
 
     await openCase(page, server.url);
     await ask(page, { who: 'mara', question: 'Where were you between 01:45 and 02:40?', mobile });
@@ -62,7 +63,9 @@ try {
 
     if (!mobile) await page.locator('.switch__btn', { hasText: 'Interview room' }).click();
     await ask(page, { who: 'felix', question: 'Your card 0193 never left the building and opened vault V2 at 02:14. Where was your badge?', mobile });
-    await shot(page, '02-interrogation', vpName);
+    // New answers type on character by character; wait for the last one to finish and its stamp to land.
+    await page.waitForFunction(() => !document.querySelector('.msg.is-typing'), null, { timeout: 5000 });
+    await shot(page, '02-interrogation', vpName, { settle: 600 });
 
     await startLab(page, {
       exhibit: 'phone-log',
