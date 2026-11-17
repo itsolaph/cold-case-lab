@@ -1,0 +1,394 @@
+/* ---------------------------------------------------------------------------
+   Cold Case Lab: a forensic light table in a night crime lab.
+   Tokens, fonts, base elements and shared primitives.
+--------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: 'Archivo';
+  src: url('/fonts/archivo-latin-var.woff2') format('woff2');
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Source Serif 4';
+  src: url('/fonts/source-serif-4-latin-var.woff2') format('woff2');
+  font-weight: 400 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Source Serif 4';
+  src: url('/fonts/source-serif-4-latin-italic-var.woff2') format('woff2');
+  font-weight: 400 600;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono-latin-var.woff2') format('woff2');
+  font-weight: 400 600;
+  font-display: swap;
+}
+
+:root {
+  /* light table */
+  --glass: #e9eff1;
+  --glass-hi: #fbfdfe;
+  --glass-lo: #d8e1e5;
+  /* evidence bags */
+  --bag: rgb(255 255 255 / 0.62);
+  --bag-solid: rgb(255 255 255 / 0.86);
+  --edge: rgb(255 255 255 / 0.92);
+  --rule: rgb(28 37 43 / 0.12);
+  --rule-soft: rgb(28 37 43 / 0.07);
+  /* ink */
+  --ink: #1c252b;
+  --ink-2: #5b6b73;
+  --ink-3: #8696a0;
+  --graphite: #3a4850;
+  /* signals */
+  --luminol: #2457ff;
+  --luminol-wash: rgb(36 87 255 / 0.08);
+  --luminol-glow: rgb(36 87 255 / 0.32);
+  --tamper: #d7263d;
+  --tamper-dark: #b01b30;
+  --tamper-wash: rgb(215 38 61 / 0.08);
+
+  /* elevation: exactly two levels */
+  --e1: 0 1px 1px rgb(28 37 43 / 0.05), 0 3px 10px rgb(28 37 43 / 0.07);
+  --e2: 0 2px 4px rgb(28 37 43 / 0.08), 0 16px 40px rgb(28 37 43 / 0.14);
+  --bag-edge: inset 0 0 0 1px var(--edge), 0 0 0 1px rgb(28 37 43 / 0.06);
+
+  /* type */
+  --sans: 'Archivo', 'Arial Narrow', sans-serif;
+  --serif: 'Source Serif 4', Georgia, serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* motion */
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --fast: 140ms;
+  --med: 260ms;
+
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--glass);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.45;
+  font-stretch: 100%;
+  font-variant-numeric: tabular-nums;
+  /* backlit frosted glass: a faint backlight from the centre, a graticule etched in the glass */
+  background:
+    radial-gradient(ellipse 65% 55% at 50% 42%, var(--glass-hi) 0%, rgb(251 253 254 / 0) 72%),
+    linear-gradient(rgb(28 37 43 / 0.025) 1px, transparent 1px) 0 0 / 32px 32px,
+    linear-gradient(90deg, rgb(28 37 43 / 0.025) 1px, transparent 1px) 0 0 / 32px 32px,
+    radial-gradient(ellipse 120% 100% at 50% 50%, var(--glass) 55%, var(--glass-lo) 100%);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+dl,
+dd,
+blockquote,
+figure {
+  margin: 0;
+}
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+a {
+  color: var(--luminol);
+}
+
+/* Focus is ink, not blue: blue means "cloud lab" in this interface. */
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* `hidden` always wins over component display rules */
+[hidden] {
+  display: none !important;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip {
+  position: absolute;
+  left: 12px;
+  top: -60px;
+  z-index: 50;
+  padding: 8px 12px;
+  background: var(--ink);
+  color: #fff;
+  border-radius: 4px;
+  text-decoration: none;
+}
+.skip:focus {
+  top: 12px;
+}
+
+/* ---- labels: condensed, uppercase, tracked (evidence-tag lettering) ---- */
+.label {
+  font-family: var(--sans);
+  font-stretch: 78%;
+  font-weight: 650;
+  font-size: 11.5px;
+  line-height: 1.2;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.label--quiet {
+  color: var(--ink-3);
+}
+
+/* ---- evidence bag panel ---- */
+.bag {
+  position: relative;
+  background: var(--bag);
+  border-radius: 8px;
+  box-shadow: var(--bag-edge), var(--e1);
+  -webkit-backdrop-filter: blur(6px) saturate(1.05);
+  backdrop-filter: blur(6px) saturate(1.05);
+}
+/* heat-seal strip along the top of every bag */
+.bag::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 7px;
+  border-radius: 8px 8px 0 0;
+  background: repeating-linear-gradient(90deg, rgb(28 37 43 / 0.07) 0 1px, transparent 1px 4px);
+  border-bottom: 1px solid var(--rule-soft);
+  pointer-events: none;
+}
+.bag--e2 {
+  box-shadow: var(--bag-edge), var(--e2);
+}
+
+/* ---- buttons ---- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-stretch: 85%;
+  font-weight: 650;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition:
+    background-color var(--fast) var(--ease),
+    border-color var(--fast) var(--ease),
+    color var(--fast) var(--ease),
+    transform var(--fast) var(--ease),
+    box-shadow var(--fast) var(--ease);
+}
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+.btn--primary {
+  background: var(--ink);
+  color: #fff;
+}
+.btn--primary:hover:not(:disabled) {
+  background: #2d3a42;
+  box-shadow: var(--e1);
+}
+.btn--tamper {
+  background: transparent;
+  color: var(--tamper);
+  border-color: var(--tamper);
+}
+.btn--tamper:hover:not(:disabled) {
+  background: var(--tamper);
+  color: #fff;
+}
+.btn--tamper.is-armed {
+  background: var(--tamper);
+  color: #fff;
+}
+.btn--tamper.is-armed:hover {
+  background: var(--tamper-dark);
+  border-color: var(--tamper-dark);
+}
+.btn--quiet {
+  background: transparent;
+  color: var(--ink-2);
+  border-color: var(--rule);
+}
+.btn--quiet:hover:not(:disabled) {
+  color: var(--ink);
+  border-color: var(--ink-2);
+  background: rgb(255 255 255 / 0.5);
+}
+.btn--xl {
+  min-height: 52px;
+  padding: 0 28px;
+  font-size: 16px;
+}
+
+/* ---- route chips ---- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 3px;
+  font-stretch: 80%;
+  font-weight: 650;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border: 1px solid currentColor;
+}
+.chip__ms {
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding-left: 6px;
+  border-left: 1px solid currentColor;
+}
+.chip__demo {
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: lowercase;
+  opacity: 0.75;
+  border: 1px dashed currentColor;
+  border-radius: 2px;
+  padding: 0 4px;
+  line-height: 14px;
+}
+.chip--on-device {
+  color: var(--graphite);
+  background: rgb(58 72 80 / 0.06);
+}
+.chip--remote-line {
+  color: var(--ink-2);
+  border-style: dashed;
+}
+.chip--cloud-lab {
+  color: var(--luminol);
+  background: var(--luminol-wash);
+}
+
+/* ---- stamps (provenance marks) ---- */
+.stamp {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 2px;
+  font-stretch: 78%;
+  font-weight: 700;
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border: 1px solid currentColor;
+}
+.stamp--lab {
+  color: var(--luminol);
+  background: var(--luminol-wash);
+}
+.stamp--admit,
+.stamp--press {
+  color: var(--tamper);
+  background: var(--tamper-wash);
+}
+.stamp--said {
+  color: var(--graphite);
+}
+.stamp--claim,
+.stamp--bluff {
+  color: var(--ink-2);
+  border-style: dashed;
+}
+
+.empty {
+  color: var(--ink-2);
+  font-size: 14px;
+}
+
+/* ---- skeleton ---- */
+.skeleton {
+  border-radius: 4px;
+  background: linear-gradient(90deg, rgb(28 37 43 / 0.05), rgb(28 37 43 / 0.1), rgb(28 37 43 / 0.05)) 0 0 / 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+.skeleton--viewer {
+  height: 320px;
+}
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
