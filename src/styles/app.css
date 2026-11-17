@@ -657,10 +657,13 @@
 }
 
 /* Stamps in the right margin of the sheet */
+.msg:has(> .stamp--margin) {
+  padding-right: 6.5rem;
+}
 .stamp--margin {
   position: absolute;
   top: 6px;
-  right: -90px;
+  right: 0;
   rotate: -11deg;
   font-size: 1.0625rem;
   padding: 3px 10px;
@@ -2353,15 +2356,12 @@
   .msg {
     padding-right: 0;
   }
-  .stamp--margin {
-    position: static;
-    grid-column: 2;
-    justify-self: end;
-    margin: -10px -4px -16px 0;
-    font-size: var(--fs-label);
+  .msg:has(> .stamp--margin) {
+    padding-right: 4.75rem;
   }
-  .msg > .stamp--margin {
-    grid-column: 2;
+  .stamp--margin {
+    top: 2px;
+    font-size: var(--fs-label);
   }
   .line {
     font-size: 1rem;
