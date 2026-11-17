@@ -26,14 +26,19 @@ export function parseCsv(text: string): string[][] {
     });
 }
 
-/** Centre column alternative: exhibit viewer, lab request form and lab reports. */
+/**
+ * The exhibit sheet and the lab request form (centre), plus the tray under the tube's mouth
+ * where reports come back as pink carbon slips (`tray`, placed on the right wall).
+ */
 export class Lab {
   readonly el: HTMLElement;
+  readonly tray: HTMLElement;
   private readonly tabs: HTMLElement;
   private readonly viewer: HTMLElement;
   private readonly input: HTMLTextAreaElement;
   private readonly sendBtn: HTMLButtonElement;
   private readonly sealNote: HTMLElement;
+  private readonly formLabel: HTMLElement;
   private readonly reports: HTMLElement;
   private readonly reportNodes = new Map<string, { status: string; node: HTMLElement }>();
   private shown: ExhibitId | null = null;
@@ -65,17 +70,18 @@ export class Lab {
     }
     this.viewer = h('div', { class: 'viewer', id: 'exhibit-viewer', role: 'tabpanel', tabindex: 0 });
     this.input = h('textarea', {
-      class: 'composer__input',
+      class: 'lab__input',
       id: 'lab-request',
-      rows: 2,
+      rows: 3,
       maxlength: 600,
       placeholder: 'What should the lab test for? Name the person, handset, door or time.',
     }) as HTMLTextAreaElement;
     this.input.addEventListener('input', () => {
       this.ctx.ui.drafts[`lab:${this.ctx.ui.labExhibit}`] = this.input.value;
     });
-    this.sendBtn = h('button', { class: 'btn btn--tamper', type: 'submit' }, 'Send to the lab') as HTMLButtonElement;
+    this.sendBtn = h('button', { class: 'btn btn--brass', type: 'submit' }, 'Send a canister') as HTMLButtonElement;
     this.sealNote = h('span', { class: 'lab__seal-note' });
+    this.formLabel = h('label', { class: 'lab__label', for: 'lab-request' }, 'Lab request');
     const form = h(
       'form',
       {
@@ -85,23 +91,21 @@ export class Lab {
           this.submit();
         },
       },
-      h('label', { class: 'label', for: 'lab-request' }, 'Lab request'),
+      this.formLabel,
+      h('p', { class: 'lab__rule' }, 'The lab runs on Gemini in the cloud. Each request uses one canister, and a vague request gets a vague report.'),
       this.input,
       h('div', { class: 'lab__send' }, this.sealNote, this.sendBtn),
     );
     this.reports = h('ol', { class: 'reports', 'aria-live': 'polite', 'aria-label': 'Lab reports' });
     this.el = h(
       'section',
-      { class: 'lab bag', 'aria-labelledby': 'lab-title' },
-      h(
-        'header',
-        { class: 'lab__head' },
-        h('h2', { class: 'lab__title', id: 'lab-title' }, 'Forensic lab'),
-        h('p', { class: 'lab__sub' }, 'Runs in the cloud. Every request breaks one seal. A vague request gets a vague report.'),
-      ),
+      { class: 'lab', 'aria-labelledby': 'lab-title' },
+      h('h2', { class: 'sr-only', id: 'lab-title' }, 'Exhibits and the lab'),
       this.tabs,
-      h('div', { class: 'lab__grid' }, h('div', { class: 'lab__exhibit' }, this.viewer, form), h('div', { class: 'lab__reports' }, h('h3', { class: 'label' }, 'Reports'), this.reports)),
+      h('div', { class: 'exsheet' }, this.viewer),
+      form,
     );
+    this.tray = h('section', { class: 'tray', 'aria-labelledby': 'tray-title' }, h('h2', { class: 'sr-only', id: 'tray-title' }, 'Lab reports'), this.reports);
   }
 
   private submit() {
@@ -120,11 +124,10 @@ export class Lab {
     const head = h(
       'div',
       { class: 'viewer__head' },
-      h('span', { class: 'exhibit__code' }, e.code),
-      h('span', { class: 'viewer__title' }, e.title),
-      h('a', { class: 'viewer__raw', href: url, target: '_blank', rel: 'noopener' }, 'Open raw file'),
+      h('h3', { class: 'viewer__title' }, `Exhibit ${e.code}. ${e.title}`),
+      h('a', { class: 'viewer__raw', href: url, target: '_blank', rel: 'noopener' }, 'Open the raw file'),
     );
-    const prov = h('p', { class: 'viewer__prov' }, `Chain of custody: ${e.provenance}.`);
+    const prov = h('p', { class: 'viewer__prov' }, `Chain of custody: ${e.provenance}. ${e.size}.`);
     let body: HTMLElement;
     if (e.kind === 'image') {
       body = h('img', { class: 'viewer__img', src: url, alt: e.alt ?? e.title, width: 900, height: 1200, loading: 'lazy' });
@@ -159,42 +162,48 @@ export class Lab {
       return h(
         'li',
         { class: 'report report--working', 'data-id': c.id },
-        h('div', { class: 'report__head' }, h('span', { class: 'report__n' }, `Report ${n}`), h('span', { class: 'exhibit__code' }, e.code), routeChip('cloud-lab', undefined, this.ctx.demo)),
-        h('p', { class: 'report__req' }, `“${c.request}”`),
-        h('div', { class: 'report__progress', role: 'status' }, h('span', { class: 'scan', 'aria-hidden': 'true' }), `At the lab: examining ${e.title.toLowerCase()}`),
+        h(
+          'p',
+          { class: 'report__wait', role: 'status' },
+          `Canister ${n} is at the lab with exhibit ${e.code}. `,
+          h('span', { class: 'typing__dots', 'aria-hidden': 'true' }, h('i', {}, '.'), h('i', {}, '.'), h('i', {}, '.')),
+        ),
+        h('p', { class: 'report__req' }, `You asked: “${c.request}”`),
+        routeChip('cloud-lab', undefined, this.ctx.demo),
       );
     }
     if (c.status === 'failed') {
       return h(
         'li',
         { class: 'report report--failed', 'data-id': c.id },
-        h('div', { class: 'report__head' }, h('span', { class: 'report__n' }, 'Returned'), h('span', { class: 'exhibit__code' }, e.code)),
-        h('p', { class: 'report__req' }, `“${c.request}”`),
+        h('p', { class: 'report__wait' }, `The canister came back unopened (exhibit ${e.code}). It is back in the rack.`),
+        h('p', { class: 'report__req' }, `You asked: “${c.request}”`),
         h('p', { class: 'report__summary' }, c.summary),
       );
     }
     return h(
       'li',
-      { class: 'report', 'data-id': c.id },
-      h(
-        'div',
-        { class: 'report__head' },
-        h('span', { class: 'report__n' }, `Report ${n}`),
-        h('span', { class: 'exhibit__code' }, e.code),
-        routeChip('cloud-lab', c.ms, this.ctx.demo),
-      ),
-      h('p', { class: 'report__req' }, `“${c.request}”`),
+      { class: 'report slip', 'data-id': c.id, style: `--tilt: ${n % 2 ? -0.9 : 0.7}deg` },
+      h('header', { class: 'slip__head' }, h('p', { class: 'slip__lab' }, `Ashfall Forensic Services, report ${n}`), h('p', { class: 'slip__ref' }, `Exhibit ${e.code}, ${e.title.toLowerCase()}`)),
+      h('p', { class: 'report__req' }, `Request: “${c.request}”`),
       h('p', { class: 'report__summary' }, c.summary),
       c.findings.length
         ? h(
             'ul',
             { class: 'findings' },
             c.findings.map((f) =>
-              h('li', { class: 'finding' }, h('span', { class: 'stamp stamp--lab' }, 'Certified'), h('p', {}, f.text), getFact(f.factId) ? h('span', { class: 'finding__pinned' }, 'Pinned') : null),
+              h(
+                'li',
+                { class: 'finding' },
+                h('span', { class: 'stamp stamp--certified' }, 'Certified'),
+                h('p', {}, f.text),
+                getFact(f.factId) ? h('span', { class: 'finding__pinned' }, 'Pinned to the case folder') : null,
+              ),
             ),
           )
         : h('p', { class: 'report__none' }, 'No finding certified.'),
       c.fallback ? h('p', { class: 'report__note' }, 'The model reply was unreadable; this report was rebuilt from the bench notes.') : null,
+      h('p', { class: 'slip__foot' }, routeChip('cloud-lab', c.ms, this.ctx.demo)),
     );
   }
 
@@ -209,12 +218,13 @@ export class Lab {
     if (this.shown !== exId) {
       this.shown = exId;
       this.viewer.setAttribute('aria-labelledby', `tab-${exId}`);
-      this.viewer.replaceChildren(h('div', { class: 'skeleton skeleton--viewer', 'aria-hidden': 'true' }));
+      this.viewer.replaceChildren(h('div', { class: 'skeleton skeleton--viewer', 'aria-hidden': 'true' }, h('i'), h('i'), h('i'), h('i')));
       void this.renderViewer(e).then((node) => {
         if (this.shown === exId) this.viewer.replaceChildren(node);
       });
       this.input.value = this.ctx.ui.drafts[`lab:${exId}`] ?? '';
     }
+    this.formLabel.textContent = `Lab request for exhibit ${e.code}`;
 
     const left = labTokensLeft(s);
     const busy = this.ctx.game.labBusy;
@@ -222,7 +232,7 @@ export class Lab {
     this.sendBtn.disabled = left <= 0 || busy || closed;
     this.input.disabled = left <= 0 || closed;
     this.sealNote.textContent =
-      left <= 0 ? 'All three seals are broken. Work with what you have.' : busy ? 'The lab is working on a request.' : `Breaks seal ${LAB_TOKENS - left + 1} of ${LAB_TOKENS}`;
+      left <= 0 ? 'All three canisters are used. Work with what you have.' : busy ? 'Wait for the canister to come back.' : `Uses canister ${LAB_TOKENS - left + 1} of ${LAB_TOKENS}`;
 
     // Reports, newest first, keyed by id; re-render only on status change.
     const live = s.labCalls.filter((c) => c.status !== 'failed');
@@ -235,19 +245,25 @@ export class Lab {
       if (prev && prev.status === c.status) continue;
       const node = this.renderReport(c, numberOf(c));
       if (prev) {
-        node.classList.add('is-new');
+        if (this.primed) node.classList.add('is-new');
         prev.node.replaceWith(node);
       } else {
-        if (c.status === 'working') node.classList.add('is-new');
+        if (this.primed) node.classList.add('is-new');
         this.reports.prepend(node);
       }
       this.reportNodes.set(c.id, { status: c.status, node });
       if (this.primed) changed = node;
     }
-    // Bring a new or finished report into view, never on the first paint of a restored game.
-    if (changed && this.el.offsetParent !== null) {
+    // Bring a new or finished report into view inside the tray, never on the first paint of a restored game.
+    if (changed && this.tray.offsetParent !== null) {
       const node = changed;
-      requestAnimationFrame(() => node.scrollIntoView({ block: 'nearest', behavior: prefersReducedMotion() ? 'instant' : 'smooth' }));
+      const behavior = prefersReducedMotion() ? 'instant' : 'smooth';
+      requestAnimationFrame(() => {
+        // Desktop: the right wall scrolls; the newest slip sits right under the tube's mouth, so go to the top.
+        const wall = this.tray.closest<HTMLElement>('.wall--right');
+        if (wall && wall.clientHeight > 0 && wall.scrollHeight > wall.clientHeight) wall.scrollTo({ top: 0, behavior });
+        else node.scrollIntoView({ block: 'nearest', behavior });
+      });
     }
     this.primed = true;
     for (const [id, r] of this.reportNodes) {
@@ -257,7 +273,7 @@ export class Lab {
       }
     }
     if (!s.labCalls.length && !this.reports.childElementCount) {
-      this.reports.append(h('li', { class: 'empty', 'data-empty': '1' }, 'No requests yet. Read an exhibit, decide what would prove something, then ask for exactly that.'));
+      this.reports.append(h('li', { class: 'tray__empty', 'data-empty': '1' }, 'Reports drop out of the tube here. Read an exhibit, decide what would prove something, then ask the lab for exactly that.'));
     } else if (s.labCalls.length) {
       this.reports.querySelector('[data-empty]')?.remove();
     }

@@ -1,7 +1,7 @@
 import type { Route } from '../ai/engine';
-import { fmtMs, ROUTE_LABEL, routeText } from './format';
+import { fmtMs, ROUTE_LABEL, routeText, routeVisible } from './format';
 
-export { fmtMs, ROUTE_LABEL, routeText };
+export { fmtMs, ROUTE_LABEL, routeText, routeVisible };
 
 type Child = Node | string | number | false | null | undefined;
 type Attrs = Record<string, string | number | boolean | EventListener | null | undefined> & {
@@ -36,7 +36,10 @@ export function svg(markup: string): SVGElement {
   return t.content.firstElementChild as SVGElement;
 }
 
-/** Route chip: `ON DEVICE · 412 ms`. Demo engine chips carry a visible "demo" mark. */
+/**
+ * Route note under an answer or report. Visible text is sentence case (`On this device, 412 ms`);
+ * the aria-label keeps the spoken form (`ON DEVICE · 412 ms`). Demo engine notes say so.
+ */
 export function routeChip(route: Route, ms: number | undefined, demo: boolean): HTMLElement {
   return h(
     'span',
@@ -45,9 +48,27 @@ export function routeChip(route: Route, ms: number | undefined, demo: boolean): 
       'aria-label': `${routeText(route, ms)}${demo ? ' (demo engine)' : ''}`,
       title: demo ? 'Simulated by the demo engine' : undefined,
     },
-    h('span', { class: 'chip__route' }, ROUTE_LABEL[route]),
-    ms !== undefined ? h('span', { class: 'chip__ms' }, fmtMs(ms)) : null,
-    demo ? h('span', { class: 'chip__demo' }, 'demo') : null,
+    routeVisible(route, ms),
+    demo ? h('span', { class: 'chip__demo' }, ' (demo)') : null,
+  );
+}
+
+/** `<picture>` with webp + jpg for the photos in public/img. */
+export function photo(name: string, alt: string, w: number, ht: number, opts: { cls?: string; eager?: boolean } = {}): HTMLElement {
+  const base = `${import.meta.env.BASE_URL}img/${name}`;
+  return h(
+    'picture',
+    { class: opts.cls },
+    h('source', { srcset: `${base}.webp`, type: 'image/webp' }),
+    h('img', {
+      src: `${base}.jpg`,
+      alt,
+      width: w,
+      height: ht,
+      decoding: 'async',
+      loading: opts.eager ? undefined : 'lazy',
+      fetchpriority: opts.eager ? 'high' : undefined,
+    }),
   );
 }
 

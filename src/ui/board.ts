@@ -3,17 +3,18 @@ import type { GameState } from '../game/state';
 import type { Ctx } from './context';
 import { h } from './dom';
 
+/** Where a fact came from, as the slip's source line. Admissions get the red stamp. */
 export function sourceStamp(f: IndexedFact): HTMLElement {
   if (f.source.kind === 'lab') {
-    return h('span', { class: 'stamp stamp--lab' }, `Lab ${getExhibit(f.source.exhibitId).code}`);
+    return h('span', { class: 'stamp stamp--lab' }, `Certified, lab ${getExhibit(f.source.exhibitId).code}`);
   }
   const who = getCharacter(f.source.characterId).shortName;
-  if (f.source.label === 'admission') return h('span', { class: 'stamp stamp--admit' }, `Admitted, ${who}`);
-  if (f.source.label === 'claim') return h('span', { class: 'stamp stamp--claim' }, `Claim, ${who}`);
-  return h('span', { class: 'stamp stamp--said' }, `Said, ${who}`);
+  if (f.source.label === 'admission') return h('span', { class: 'stamp stamp--admit' }, `Admitted by ${who}`);
+  if (f.source.label === 'claim') return h('span', { class: 'stamp stamp--claim' }, `${who} claims`);
+  return h('span', { class: 'stamp stamp--said' }, `${who} said`);
 }
 
-/** Right column, top: pinned facts. Keyed by fact id so old pins never re-animate. */
+/** Inside the case folder: pinned facts as typed slips. Keyed by fact id so old slips never re-animate. */
 export class Board {
   readonly el: HTMLElement;
   private readonly list: HTMLElement;
@@ -23,30 +24,33 @@ export class Board {
   private primed = false;
 
   constructor() {
-    this.count = h('span', { class: 'board__count' });
+    this.count = h('span', { class: 'folder__count' });
     this.list = h('ul', { class: 'pins', role: 'list' });
-    this.empty = h(
-      'p',
-      { class: 'empty' },
-      'Nothing pinned yet. Facts land here when someone states them or the lab certifies them.',
-    );
+    this.empty = h('p', { class: 'folder__empty' }, 'Nothing pinned yet. A fact lands here when someone states it or the lab certifies it.');
     this.el = h(
       'section',
-      { class: 'board bag', 'aria-labelledby': 'board-title' },
-      h('header', { class: 'panel__head' }, h('h2', { class: 'label', id: 'board-title' }, 'Case board'), this.count),
+      { class: 'board', 'aria-labelledby': 'board-title' },
+      h('header', { class: 'folder__head' }, h('h2', { class: 'folder__title', id: 'board-title' }, 'Case folder'), this.count),
       this.empty,
       this.list,
     );
   }
 
   update(s: GameState) {
-    this.count.textContent = s.pins.length ? `${s.pins.length} pinned` : '';
+    this.count.textContent = s.pins.length === 1 ? '1 fact pinned' : s.pins.length ? `${s.pins.length} facts pinned` : '';
     this.empty.hidden = s.pins.length > 0;
     for (const p of s.pins) {
       if (this.nodes.has(p.factId)) continue;
       const f = getFact(p.factId);
       if (!f) continue;
-      const node = h('li', { class: `pin pin--${f.source.kind === 'lab' ? 'lab' : f.source.label}`, 'data-fact': f.id }, sourceStamp(f), h('p', { class: 'pin__text' }, f.text));
+      const kind = f.source.kind === 'lab' ? 'lab' : f.source.label;
+      const node = h(
+        'li',
+        { class: `pin pin--${kind}`, 'data-fact': f.id },
+        h('span', { class: 'pin__clip', 'aria-hidden': 'true' }),
+        h('p', { class: 'pin__text' }, f.text),
+        sourceStamp(f),
+      );
       if (this.primed) node.classList.add('is-new');
       this.nodes.set(p.factId, node);
       this.list.prepend(node);
@@ -63,7 +67,7 @@ export class Board {
   }
 }
 
-/** Right column, bottom: the exhibits drawer. */
+/** The folder's pocket: four evidence tags on strings. Each opens its exhibit sheet. */
 export class Drawer {
   readonly el: HTMLElement;
   private readonly marks = new Map<string, HTMLElement>();
@@ -82,10 +86,12 @@ export class Drawer {
             {
               class: 'exhibit',
               type: 'button',
+              title: e.provenance,
               onclick: () => ctx.setUi({ view: 'lab', tab: 'lab', labExhibit: e.id }),
             },
+            h('span', { class: 'exhibit__hole', 'aria-hidden': 'true' }),
             h('span', { class: 'exhibit__code' }, e.code),
-            h('span', { class: 'exhibit__body' }, h('span', { class: 'exhibit__title' }, e.title), h('span', { class: 'exhibit__meta', title: e.provenance }, e.size)),
+            h('span', { class: 'exhibit__title' }, e.title),
             mark,
           ),
         ),
@@ -93,9 +99,9 @@ export class Drawer {
     }
     this.el = h(
       'section',
-      { class: 'drawer bag', 'aria-labelledby': 'drawer-title' },
-      h('header', { class: 'panel__head' }, h('h2', { class: 'label', id: 'drawer-title' }, 'Exhibits'), h('span', { class: 'board__count' }, 'Read one or send it to the lab')),
-      list,
+      { class: 'drawer', 'aria-labelledby': 'drawer-title' },
+      h('h2', { class: 'sr-only', id: 'drawer-title' }, 'Exhibits'),
+      h('div', { class: 'pocket' }, list),
     );
   }
 

@@ -1,6 +1,6 @@
 import { caseFile } from '../case';
 import type { DeviceStatus } from '../ai/engine';
-import { h } from './dom';
+import { h, photo } from './dom';
 
 export interface TitleOptions {
   demo: boolean;
@@ -12,7 +12,10 @@ export interface TitleOptions {
   onEnter(): void;
 }
 
-/** Case-file cover on the light table. The "Open the case" click initialises the on-device model. */
+/**
+ * The empty interview room at night. On load the lamp comes up, then the case name settles on the wall.
+ * The "Open the case" click initialises the on-device model.
+ */
 export function renderTitle(root: HTMLElement, opts: TitleOptions) {
   const progressBar = h('span', { class: 'meter__fill' });
   const progressText = h('span', { class: 'meter__text' }, '');
@@ -23,15 +26,15 @@ export function renderTitle(root: HTMLElement, opts: TitleOptions) {
     const who = opts.demo ? 'Demo engine: simulated model download' : 'Downloading Gemini Nano';
     if (s.state === 'downloading') {
       const pct = Math.round(s.progress * 100);
-      progressBar.style.inlineSize = `${pct}%`;
-      progressText.textContent = `${who} ${pct}%`;
+      progressBar.style.transform = `scaleX(${s.progress})`;
+      progressText.textContent = `${who}, ${pct}%`;
     } else if (s.state === 'ready') {
-      progressBar.style.inlineSize = '100%';
-      progressText.textContent = opts.demo ? 'Demo engine ready' : 'Gemini Nano ready on this device';
+      progressBar.style.transform = 'scaleX(1)';
+      progressText.textContent = opts.demo ? 'Demo engine ready' : 'Gemini Nano is ready on this device';
     } else {
-      progressBar.style.inlineSize = '100%';
+      progressBar.style.transform = 'scaleX(1)';
       meter.classList.add('meter--remote');
-      progressText.textContent = 'No on-device model here: suspects will be on a remote line';
+      progressText.textContent = 'No on-device model here, so interviews go over a remote line';
     }
   };
 
@@ -59,45 +62,29 @@ export function renderTitle(root: HTMLElement, opts: TitleOptions) {
     opts.hasSave ? 'Resume the case' : 'Open the case',
   );
   const newBtn = opts.hasSave
-    ? h('button', { class: 'btn btn--quiet', type: 'button', onclick: () => void open(true) }, 'Start a new case file')
+    ? h('button', { class: 'btn btn--text', type: 'button', onclick: () => void open(true) }, 'Start a new case file')
     : null;
 
   const cover = h(
     'main',
     { class: 'title', id: 'main' },
     h(
+      'div',
+      { class: 'title__room', 'aria-hidden': 'true' },
+      photo('room', '', 1920, 1080, { cls: 'title__photo', eager: true }),
+      h('span', { class: 'title__wash' }),
+      h('span', { class: 'title__lamp' }),
+    ),
+    h(
       'article',
-      { class: 'cover bag bag--e2', 'aria-labelledby': 'case-title' },
-      h('div', { class: 'cover__tape', 'aria-hidden': 'true' }, h('span', {}, 'Evidence sealed'), h('span', {}, 'Evidence sealed')),
-      h(
-        'header',
-        { class: 'cover__head' },
-        h('p', { class: 'label' }, `Case file ${caseFile.number}`),
-        h('p', { class: 'label label--quiet' }, 'Halden Glasshouse Station'),
-      ),
+      { class: 'cover', 'aria-labelledby': 'case-title' },
       h('h1', { class: 'cover__title', id: 'case-title' }, caseFile.title),
-      h('p', { class: 'cover__premise' }, caseFile.premise[0], h('br'), caseFile.premise[1]),
-      h(
-        'dl',
-        { class: 'custody' },
-        h('div', {}, h('dt', {}, 'Exhibits'), h('dd', {}, '4 sealed')),
-        h('div', {}, h('dt', {}, 'People'), h('dd', {}, '3 suspects, 1 witness')),
-        h('div', {}, h('dt', {}, 'Lab requests'), h('dd', {}, '3, no refills')),
-      ),
+      h('p', { class: 'cover__premise' }, 'Overnight, the last Ashfall lily seeds vanished from the station’s vault. Four people were in the building.'),
       h('div', { class: 'cover__actions' }, openBtn, newBtn),
       meter,
-      h(
-        'p',
-        { class: 'cover__route' },
-        'On-device interrogation via Gemini Nano in Chrome · forensic lab via Gemini in the cloud',
-      ),
+      h('p', { class: 'cover__route' }, 'Interviews run on Gemini Nano in your browser. The lab runs on Gemini in the cloud.'),
       opts.demo
-        ? h(
-            'p',
-            { class: 'cover__demo' },
-            h('strong', {}, 'Demo engine. '),
-            `${opts.engineReason} Answers are scripted from the case file; no AI model is called.`,
-          )
+        ? h('p', { class: 'cover__demo' }, `${opts.engineReason} Answers come from the case file; no AI model is called.`)
         : null,
     ),
   );

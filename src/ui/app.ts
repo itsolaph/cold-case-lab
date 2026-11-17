@@ -13,31 +13,31 @@ import { renderResult } from './result';
 import { Room } from './room';
 
 function deviceLine(d: DeviceStatus | null, demo: boolean): string {
-  if (!d) return demo ? 'Demo engine' : 'Starting';
-  if (d.state === 'ready') return demo ? 'Demo engine: on device (simulated)' : 'Gemini Nano on this device';
-  if (d.state === 'downloading') return `${demo ? 'Simulated download' : 'Gemini Nano downloading'} ${Math.round(d.progress * 100)}%`;
-  return demo ? 'Demo engine: remote line (simulated)' : 'Remote line: no on-device model';
+  if (!d) return demo ? 'Demo engine' : 'Starting the model';
+  if (d.state === 'ready') return demo ? 'The demo engine stands in for Gemini Nano' : 'Gemini Nano is running in this browser';
+  if (d.state === 'downloading') return `${demo ? 'Simulated download' : 'Downloading Gemini Nano'}, ${Math.round(d.progress * 100)}%`;
+  return demo ? 'Demo engine, simulating a remote line' : 'No on-device model, so interviews go over a remote line';
 }
 
-/** Confirm before wiping progress. Native <dialog>, styled like the accusation sheet. */
+/** Confirm before wiping progress. A native <dialog>, printed like the charge sheet. */
 function confirmNewCase(onConfirm: () => void) {
   const dialog = h(
     'dialog',
-    { class: 'accuse confirm bag bag--e2', 'aria-labelledby': 'confirm-title' },
+    { class: 'confirm sheet sheet--small', 'aria-labelledby': 'confirm-title' },
     h(
       'form',
       { method: 'dialog' },
       h(
         'header',
-        { class: 'accuse__head' },
-        h('h2', { class: 'accuse__title', id: 'confirm-title' }, 'Start a new case file?'),
-        h('p', {}, 'Your questions, pinned facts and lab reports will be cleared, and all three seals restored.'),
+        { class: 'sheet__head' },
+        h('h2', { class: 'sheet__title', id: 'confirm-title' }, 'Start a new case file?'),
+        h('p', { class: 'sheet__lede' }, 'Your interview records, pinned facts and lab reports will be cleared, and all three canisters go back in the rack.'),
       ),
       h(
         'div',
-        { class: 'accuse__foot' },
-        h('button', { class: 'btn btn--quiet', value: 'cancel', autofocus: true }, 'Keep this case'),
-        h('button', { class: 'btn btn--tamper is-armed', value: 'reset' }, 'Start a new case file'),
+        { class: 'sheet__foot' },
+        h('button', { class: 'btn btn--text', value: 'cancel', autofocus: true }, 'Keep this case'),
+        h('button', { class: 'btn btn--primary', value: 'reset' }, 'Start a new case file'),
       ),
     ),
   ) as HTMLDialogElement;
@@ -50,7 +50,10 @@ function confirmNewCase(onConfirm: () => void) {
   dialog.showModal();
 }
 
-/** The investigation screen: header with docket, three columns, mobile tabs. */
+/**
+ * The night desk: badges on the left wall, the interview record under the lamp,
+ * the tube station and case folder on the right wall. On phones the same objects stack behind tabs.
+ */
 export class GameScreen {
   readonly el: HTMLElement;
   private readonly people: People;
@@ -61,8 +64,7 @@ export class GameScreen {
   private readonly docket: Docket;
   private readonly qCount: HTMLElement;
   private readonly qLabel: HTMLElement;
-  private readonly labCount: HTMLElement;
-  private readonly engineBadge: HTMLElement;
+  private readonly engineLine: HTMLElement;
   private readonly tabs = new Map<Tab, { btn: HTMLElement; badge: HTMLElement }>();
   private readonly segRoom: HTMLElement;
   private readonly segLab: HTMLElement;
@@ -79,31 +81,18 @@ export class GameScreen {
     this.docket = new Docket(() => ctx.setUi({ view: 'lab', tab: 'lab' }));
 
     this.qCount = h('span', { class: 'counter__n' }, '0');
-    this.qLabel = h('span', { class: 'counter__label' }, 'questions on device, free');
-    this.labCount = h('span', { class: 'counter__n counter__n--lab' }, '3');
-    this.engineBadge = h('span', { class: `engine ${ctx.demo ? 'engine--demo' : ''}`, title: ctx.engineReason, role: 'status' });
+    this.qLabel = h('span', { class: 'counter__label' }, ' questions asked on this device');
+    this.engineLine = h('span', { class: 'engine', title: ctx.engineReason, role: 'status' });
 
     const header = h(
       'header',
       { class: 'top' },
-      h(
-        'div',
-        { class: 'top__case' },
-        h('span', { class: 'label' }, `Case ${caseFile.number}`),
-        h('span', { class: 'top__title' }, caseFile.title),
-      ),
-      h(
-        'div',
-        { class: 'top__counters' },
-        h('p', { class: 'counter' }, this.qCount, this.qLabel),
-        h('p', { class: 'counter counter--lab' }, this.labCount, h('span', { class: 'counter__label' }, 'lab requests left')),
-        this.engineBadge,
-      ),
-      this.docket.el,
+      h('p', { class: 'top__case' }, h('span', { class: 'top__title' }, caseFile.title), h('span', { class: 'top__no' }, `Case ${caseFile.number}`)),
+      h('p', { class: 'top__status' }, h('span', { class: 'counter' }, this.qCount, this.qLabel), h('span', { class: 'top__sep', 'aria-hidden': 'true' }, '. '), this.engineLine),
       h(
         'button',
         {
-          class: 'btn btn--quiet top__reset',
+          class: 'btn btn--text top__reset',
           type: 'button',
           onclick: () => confirmNewCase(() => ctx.newCase()),
         },
@@ -112,9 +101,16 @@ export class GameScreen {
     );
 
     this.segRoom = h('button', { class: 'switch__btn', type: 'button', onclick: () => ctx.setUi({ view: 'room', tab: 'room' }) }, 'Interview room');
-    this.segLab = h('button', { class: 'switch__btn switch__btn--lab', type: 'button', onclick: () => ctx.setUi({ view: 'lab', tab: 'lab' }) }, 'Forensic lab');
+    this.segLab = h('button', { class: 'switch__btn switch__btn--lab', type: 'button', onclick: () => ctx.setUi({ view: 'lab', tab: 'lab' }) }, 'Exhibits and lab');
 
-    const center = h('div', { class: 'col col--center' }, h('div', { class: 'switch', role: 'group', 'aria-label': 'Centre view' }, this.segRoom, this.segLab), this.room.el, this.lab.el);
+    const desk = h(
+      'div',
+      { class: 'col col--center desk' },
+      h('span', { class: 'desk__lamp', 'aria-hidden': 'true' }),
+      h('div', { class: 'switch', role: 'group', 'aria-label': 'On the table' }, this.segRoom, this.segLab),
+      this.room.el,
+      this.lab.el,
+    );
 
     const tabNav = h('nav', { class: 'tabs', 'aria-label': 'Sections' });
     const tabDefs: [Tab, string][] = [
@@ -135,19 +131,20 @@ export class GameScreen {
       tabNav.append(btn);
     }
 
+    const folder = h('div', { class: 'folder' }, this.board.el, this.drawer.el);
+
     this.el = h(
       'div',
       { class: 'app' },
-      h('a', { class: 'skip', href: '#question' }, 'Skip to the question box'),
+      h('a', { class: 'skip', href: '#question' }, 'Skip to the question line'),
       header,
       h(
         'main',
         { class: 'stage', id: 'main' },
-        h('div', { class: 'col col--people' }, this.people.el),
-        center,
-        h('div', { class: 'col col--side' }, this.board.el, this.drawer.el),
+        h('div', { class: 'col col--people wall wall--left' }, this.people.el),
+        desk,
+        h('div', { class: 'col col--side wall wall--right' }, this.docket.el, tabNav, this.lab.tray, folder),
       ),
-      tabNav,
     );
   }
 
@@ -168,12 +165,12 @@ export class GameScreen {
 
     const counts = questionCounts(s);
     const remote = e.device?.state === 'unavailable';
-    this.qCount.textContent = String(remote ? counts.remote + counts.onDevice : counts.onDevice);
-    this.qLabel.textContent = remote ? 'questions on the remote line' : 'questions on device, free';
+    const n = remote ? counts.remote + counts.onDevice : counts.onDevice;
+    this.qCount.textContent = String(n);
+    this.qLabel.textContent = `${n === 1 ? ' question' : ' questions'} ${remote ? 'asked over the remote line' : 'asked on this device'}`;
     const left = labTokensLeft(s);
-    this.labCount.textContent = String(left);
-    this.engineBadge.textContent = deviceLine(e.device, this.ctx.demo);
-    this.engineBadge.dataset.state = e.device?.state ?? 'none';
+    this.engineLine.textContent = deviceLine(e.device, this.ctx.demo);
+    this.engineLine.dataset.state = e.device?.state ?? 'none';
 
     const boardBadge = this.tabs.get('board')?.badge;
     if (boardBadge) boardBadge.textContent = s.pins.length ? String(s.pins.length) : '';

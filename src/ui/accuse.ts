@@ -1,18 +1,19 @@
 import { caseFile, getFact } from '../case';
 import type { CharacterId } from '../case/types';
 import type { Ctx } from './context';
-import { h } from './dom';
+import { h, photo } from './dom';
 import { sourceStamp } from './board';
+import { PHOTO } from './people';
 
-/** Accusation dialog: pick the culprit and exactly two pinned facts. */
+/** The charge sheet: pick the culprit by badge photo and exactly two pinned facts. */
 export function openAccuseDialog(ctx: Ctx, onFiled: () => void) {
   const s = ctx.game.snapshot;
   if (s.accusation) return onFiled();
   let suspect: CharacterId | null = null;
   const chosen = new Set<string>();
 
-  const fileBtn = h('button', { class: 'btn btn--tamper', type: 'submit', disabled: true }, 'File the accusation') as HTMLButtonElement;
-  const status = h('p', { class: 'accuse__status', role: 'status' });
+  const fileBtn = h('button', { class: 'btn btn--tamper btn--file', type: 'submit', disabled: true }, 'File the accusation') as HTMLButtonElement;
+  const status = h('p', { class: 'sheet__status', role: 'status' });
   const refresh = () => {
     fileBtn.disabled = !suspect || chosen.size !== 2;
     fileBtn.classList.toggle('is-armed', !fileBtn.disabled);
@@ -24,27 +25,32 @@ export function openAccuseDialog(ctx: Ctx, onFiled: () => void) {
 
   const suspects = h(
     'fieldset',
-    { class: 'accuse__suspects' },
-    h('legend', { class: 'label' }, 'The culprit'),
-    caseFile.characters
-      .filter((c) => c.kind === 'suspect')
-      .map((c) =>
-        h(
-          'label',
-          { class: 'pick' },
-          h('input', {
-            type: 'radio',
-            name: 'suspect',
-            value: c.id,
-            onchange: () => {
-              suspect = c.id;
-              refresh();
-            },
-          }),
-          h('span', { class: 'tag__mono', 'aria-hidden': 'true' }, c.initials),
-          h('span', { class: 'pick__body' }, h('span', { class: 'tag__name' }, c.name), h('span', { class: 'tag__role' }, c.role)),
+    { class: 'sheet__field sheet__suspects' },
+    h('legend', { class: 'sheet__legend' }, 'Charged'),
+    h(
+      'div',
+      { class: 'picks' },
+      caseFile.characters
+        .filter((c) => c.kind === 'suspect')
+        .map((c) =>
+          h(
+            'label',
+            { class: 'pick' },
+            h('input', {
+              type: 'radio',
+              name: 'suspect',
+              value: c.id,
+              onchange: () => {
+                suspect = c.id;
+                refresh();
+              },
+            }),
+            photo(PHOTO[c.id], '', 480, 480, { cls: 'pick__photo' }),
+            h('span', { class: 'pick__name' }, c.name),
+            h('span', { class: 'pick__role' }, c.role),
+          ),
         ),
-      ),
+    ),
   );
 
   // Lab findings first: they are certified; statements can be retracted.
@@ -55,8 +61,8 @@ export function openAccuseDialog(ctx: Ctx, onFiled: () => void) {
 
   const factList = h(
     'fieldset',
-    { class: 'accuse__facts' },
-    h('legend', { class: 'label' }, 'Two pinned facts: one proves means, one proves opportunity'),
+    { class: 'sheet__field sheet__facts' },
+    h('legend', { class: 'sheet__legend' }, 'Evidence: two pinned facts, one for means and one for opportunity'),
     pins.length
       ? pins.map((f) =>
           h(
@@ -72,15 +78,15 @@ export function openAccuseDialog(ctx: Ctx, onFiled: () => void) {
                 refresh();
               },
             }),
-            h('span', { class: 'pickfact__body' }, sourceStamp(f), h('span', {}, f.text)),
+            h('span', { class: 'pickfact__body' }, h('span', { class: 'pickfact__text' }, f.text), sourceStamp(f)),
           ),
         )
-      : h('p', { class: 'empty' }, 'The board is empty. Question people and use the lab before you accuse anyone.'),
+      : h('p', { class: 'sheet__empty' }, 'The case folder is empty. Question people and use the lab before you charge anyone.'),
   );
 
   const dialog = h(
     'dialog',
-    { class: 'accuse bag bag--e2', 'aria-labelledby': 'accuse-title' },
+    { class: 'accuse sheet', 'aria-labelledby': 'accuse-title' },
     h(
       'form',
       {
@@ -96,17 +102,18 @@ export function openAccuseDialog(ctx: Ctx, onFiled: () => void) {
       },
       h(
         'header',
-        { class: 'accuse__head' },
-        h('h2', { class: 'accuse__title', id: 'accuse-title' }, 'Make the accusation'),
-        h('p', {}, 'This closes the case. Confessions can be retracted in court; lab findings cannot.'),
+        { class: 'sheet__head' },
+        h('p', { class: 'sheet__org' }, `Halden Glasshouse Station. Case ${caseFile.number}`),
+        h('h2', { class: 'sheet__title', id: 'accuse-title' }, 'Charge sheet'),
+        h('p', { class: 'sheet__lede' }, 'Filing this closes the case. Confessions can be retracted in court; lab findings cannot.'),
       ),
       suspects,
       factList,
       h(
         'div',
-        { class: 'accuse__foot' },
+        { class: 'sheet__foot' },
         status,
-        h('button', { class: 'btn btn--quiet', type: 'button', onclick: () => dialog.close() }, 'Keep investigating'),
+        h('button', { class: 'btn btn--text', type: 'button', onclick: () => dialog.close() }, 'Keep investigating'),
         fileBtn,
       ),
     ),
