@@ -14,7 +14,7 @@ mkdirSync(dirname(outFile), { recursive: true });
 const ticks = Array.from({ length: 11 }, (_, i) => `<i style="left:${i * 10}%"><b>${i}</b></i>`).join('');
 const html = /* html */ `<!doctype html>
 <html><head><meta charset="utf-8"><style>
-  @font-face { font-family: Mono; src: url('file://${root}/public/fonts/jetbrains-mono-latin-var.woff2'); }
+  @font-face { font-family: Mono; src: url('file://${root}/public/fonts/courier-prime-latin-400-normal.woff2'); }
   html,body { margin:0; }
   body {
     width: 900px; height: 1200px; overflow: hidden; position: relative;
