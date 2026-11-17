@@ -5,7 +5,7 @@ import type { AiEngine, DeviceStatus, EngineResult, InterrogationRequest, LabReq
 
 /**
  * Demo engine: a deterministic stand-in for Gemini so the whole game runs where no
- * model is available (CI, a VPS without a GPU, a browser without Gemini Nano).
+ * model is available (CI, a server without a GPU, a browser without Gemini Nano).
  * It answers from the authored fact sheets with realistic latencies and is labelled
  * "demo engine" everywhere in the UI. It is not a language model and never claims to be.
  *
