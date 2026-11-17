@@ -1,0 +1,76 @@
+HALDEN GLASSHOUSE STATION  /  DOOR CONTROLLER EXPORT
+controller: DC-2  firmware 4.11  range: 2026-03-14 17:00 .. 2026-03-15 07:00  events: 69
+
+seq   time             reader       card  holder     event       auth
+----------------------------------------------------------------------
+04180 03-14 17:04:12   MAIN-DOOR    0112  P. Sato    EXIT        2
+04181 03-14 17:11:40   LAB-W1       0145  J. Mercer  GRANTED     2
+04182 03-14 17:26:03   MAIN-DOOR    0158  H. Vey     EXIT        2
+04183 03-14 17:39:51   MAIN-DOOR    0145  J. Mercer  EXIT        2
+04184 03-14 17:58:20   PREP-ROOM    0193  F. Arden   GRANTED     2
+04185 03-14 18:05:09   LAB-W1       0193  F. Arden   GRANTED     2
+04186 03-14 18:14:33   MAIN-DOOR    0170  A. Wren    EXIT        2
+04187 03-14 18:30:02   PREP-ROOM    0101  D. Lind    GRANTED     2
+04188 03-14 18:46:58   MAIN-DOOR    0101  D. Lind    EXIT        2
+04189 03-14 19:10:14   PREP-ROOM    0193  F. Arden   GRANTED     2
+04190 03-14 19:12:40   LAB-W1       0193  F. Arden   GRANTED     2
+04191 03-14 19:55:21   BOOTH        0301  R. Okoye   GRANTED     2
+04192 03-14 20:31:06   LAB-W1       0193  F. Arden   GRANTED     2
+04193 03-14 21:47:12   MAIN-DOOR    ----  -          REX-EXIT    0
+04194 03-14 21:51:30   MAIN-DOOR    0207  M. Quill   GRANTED     1
+04195 03-14 21:53:02   PREP-ROOM    0207  M. Quill   GRANTED     2
+04196 03-14 22:02:11   CP-EAST      0301  R. Okoye   CHECKPOINT  2
+04197 03-14 22:05:47   W-CORRIDOR   0301  R. Okoye   GRANTED     2
+04198 03-14 22:07:05   CP-WEST      0301  R. Okoye   CHECKPOINT  2
+04199 03-14 22:11:39   BOOTH        0301  R. Okoye   GRANTED     2
+04200 03-14 22:12:50   W-CORRIDOR   0207  M. Quill   GRANTED     2
+04201 03-14 22:15:04   V2-VAULT     0207  M. Quill   GRANTED     1
+04202 03-14 22:15:31   V2-FREEZER   ----  -          DOOR-OPEN   -
+04203 03-14 22:15:58   V2-FREEZER   ----  -          DOOR-CLOSED -
+04204 03-14 22:17:20   V2-VAULT     ----  -          DOOR-CLOSED -
+04205 03-14 22:24:44   PREP-ROOM    0207  M. Quill   GRANTED     2
+04206 03-14 22:58:10   PREP-ROOM    0207  M. Quill   GRANTED     2
+04207 03-14 23:36:15   W-CORRIDOR   0207  M. Quill   GRANTED     2
+04208 03-14 23:38:02   LOADING-BAY  ----  -          GRANTED     K
+04209 03-14 23:38:50   LOADING-BAY  ----  -          DOOR-CLOSED -
+04210 03-14 23:55:21   LOADING-BAY  ----  -          REX-EXIT    0
+04211 03-14 23:55:49   LOADING-BAY  ----  -          DOOR-CLOSED -
+04212 03-14 23:59:03   PREP-ROOM    0207  M. Quill   GRANTED     2
+04213 03-15 00:02:40   CP-EAST      0301  R. Okoye   CHECKPOINT  2
+04214 03-15 00:05:18   W-CORRIDOR   0301  R. Okoye   GRANTED     2
+04215 03-15 00:06:52   CP-WEST      0301  R. Okoye   CHECKPOINT  2
+04216 03-15 00:12:08   BOOTH        0301  R. Okoye   GRANTED     2
+04217 03-15 00:47:29   PREP-ROOM    0207  M. Quill   GRANTED     2
+04218 03-15 01:22:05   PREP-ROOM    0207  M. Quill   GRANTED     2
+04219 03-15 01:36:41   BOOTH        0301  R. Okoye   GRANTED     2
+04220 03-15 02:03:09   W-CORRIDOR   0193  F. Arden   GRANTED     2
+04221 03-15 02:14:26   V2-VAULT     0193  F. Arden   GRANTED     3
+04222 03-15 02:15:02   V2-FREEZER   ----  -          DOOR-OPEN   -
+04223 03-15 02:16:04   V2-FREEZER   ----  -          ALARM       -
+04224 03-15 02:17:31   V2-FREEZER   ----  -          ALARM-ACK   3
+04225 03-15 02:17:40   V2-FREEZER   ----  -          DOOR-CLOSED -
+04226 03-15 02:19:13   V2-VAULT     ----  -          DOOR-CLOSED -
+04227 03-15 02:24:07   LOADING-BAY  ----  -          REX-EXIT    0
+04228 03-15 02:24:54   LOADING-BAY  ----  -          DOOR-CLOSED -
+04229 03-15 02:33:46   PREP-ROOM    0207  M. Quill   GRANTED     2
+04230 03-15 03:12:18   PREP-ROOM    0207  M. Quill   GRANTED     2
+04231 03-15 04:02:25   CP-EAST      0301  R. Okoye   CHECKPOINT  2
+04232 03-15 04:05:03   W-CORRIDOR   0301  R. Okoye   GRANTED     2
+04233 03-15 04:06:41   CP-WEST      0301  R. Okoye   CHECKPOINT  2
+04234 03-15 04:11:30   BOOTH        0301  R. Okoye   GRANTED     2
+04235 03-15 04:38:12   PREP-ROOM    0207  M. Quill   GRANTED     2
+04236 03-15 05:46:01   W-CORRIDOR   0207  M. Quill   GRANTED     2
+04237 03-15 05:48:37   V2-VAULT     0207  M. Quill   GRANTED     1
+04238 03-15 05:49:02   V2-FREEZER   ----  -          DOOR-OPEN   -
+04239 03-15 05:50:19   V2-FREEZER   ----  -          DOOR-CLOSED -
+04240 03-15 05:51:40   V2-VAULT     ----  -          DOOR-CLOSED -
+04241 03-15 05:56:22   PREP-ROOM    0207  M. Quill   GRANTED     2
+04242 03-15 06:01:50   W-CORRIDOR   0301  R. Okoye   GRANTED     2
+04243 03-15 06:03:14   V2-VAULT     0301  R. Okoye   DENIED      1
+04244 03-15 06:09:33   BOOTH        0301  R. Okoye   GRANTED     2
+04245 03-15 06:38:45   MAIN-DOOR    0101  D. Lind    GRANTED     1
+04246 03-15 06:41:06   W-CORRIDOR   0101  D. Lind    GRANTED     2
+04247 03-15 06:42:30   V2-VAULT     0101  D. Lind    GRANTED     1
+04248 03-15 06:52:40   MAIN-DOOR    ----  -          GRANTED     G
+----------------------------------------------------------------------
+end of export

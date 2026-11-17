@@ -1,0 +1,152 @@
+timestamp,handset,holder,direction,type,counterpart,duration_s,cell
+2026-03-14T18:00:05,H-04,"Guard desk (R. Okoye)",-,LOCUPD,-,0,HG-E1
+2026-03-14T18:00:40,H-01,"F. Arden",-,LOCUPD,-,0,HG-W2
+2026-03-14T18:00:41,H-02,"M. Quill",-,LOCUPD,-,0,TWN-2
+2026-03-14T18:00:45,H-03,"S. Brennick (contractor)",-,LOCUPD,-,0,RTE-4
+2026-03-14T18:00:49,H-05,"D. Lind",-,LOCUPD,-,0,TWN-1
+2026-03-14T18:04:55,H-01,"F. Arden",OUT,DATA,apn.station,53,HG-W2
+2026-03-14T18:06:53,H-03,"S. Brennick (contractor)",OUT,DATA,apn.station,251,RTE-4
+2026-03-14T18:09:31,H-04,"Guard desk (R. Okoye)",OUT,DATA,apn.station,182,HG-E1
+2026-03-14T18:11:15,H-03,"S. Brennick (contractor)",OUT,DATA,apn.station,401,RTE-4
+2026-03-14T18:12:22,H-02,"M. Quill",OUT,DATA,apn.station,392,TWN-2
+2026-03-14T18:20:04,H-04,"Guard desk (R. Okoye)",OUT,DATA,apn.station,66,HG-E1
+2026-03-14T18:22:04,H-01,"F. Arden",OUT,VOICE,555-0172,312,HG-W2
+2026-03-14T18:33:52,H-02,"M. Quill",OUT,DATA,apn.station,385,TWN-2
+2026-03-14T18:41:07,H-02,"M. Quill",IN,VOICE,555-0148,38,TWN-2
+2026-03-14T18:46:15,H-02,"M. Quill",OUT,DATA,apn.station,151,TWN-2
+2026-03-14T18:47:19,H-02,"M. Quill",-,LOCUPD,-,0,TWN-7
+2026-03-14T19:00:15,H-03,"S. Brennick (contractor)",-,LOCUPD,-,0,RTE-4
+2026-03-14T19:00:18,H-01,"F. Arden",-,LOCUPD,-,0,HG-W2
+2026-03-14T19:00:39,H-05,"D. Lind",-,LOCUPD,-,0,TWN-1
+2026-03-14T19:00:43,H-04,"Guard desk (R. Okoye)",-,LOCUPD,-,0,HG-E1
+2026-03-14T19:06:15,H-02,"M. Quill",-,LOCUPD,-,0,TWN-2
+2026-03-14T19:12:20,H-02,"M. Quill",OUT,SMS,555-0163,0,TWN-2
+2026-03-14T19:30:03,H-02,"M. Quill",IN,SMS,555-0163,0,TWN-2
+2026-03-14T19:47:31,H-01,"F. Arden",IN,VOICE,555-0172,95,HG-W2
+2026-03-14T19:58:24,H-04,"Guard desk (R. Okoye)",OUT,DATA,apn.station,406,HG-E1
+2026-03-14T20:00:05,H-04,"Guard desk (R. Okoye)",-,LOCUPD,-,0,HG-E1
+2026-03-14T20:00:43,H-03,"S. Brennick (contractor)",-,LOCUPD,-,0,RTE-4
+2026-03-14T20:00:49,H-01,"F. Arden",-,LOCUPD,-,0,HG-W2
+2026-03-14T20:00:49,H-05,"D. Lind",-,LOCUPD,-,0,TWN-1
+2026-03-14T20:06:53,H-02,"M. Quill",-,LOCUPD,-,0,TWN-2
+2026-03-14T20:12:49,H-01,"F. Arden",OUT,DATA,apn.station,216,HG-W2
+2026-03-14T20:15:11,H-03,"S. Brennick (contractor)",-,LOCUPD,-,0,TWN-9
+2026-03-14T20:22:40,H-01,"F. Arden",OUT,DATA,apn.station,251,HG-W2
+2026-03-14T20:28:04,H-02,"M. Quill",OUT,DATA,apn.station,106,TWN-2
+2026-03-14T20:58:12,H-01,"F. Arden",OUT,SMS,555-0109,0,HG-W2
+2026-03-14T21:00:09,H-05,"D. Lind",-,LOCUPD,-,0,TWN-1
+2026-03-14T21:00:22,H-01,"F. Arden",-,LOCUPD,-,0,HG-W2
+2026-03-14T21:00:31,H-04,"Guard desk (R. Okoye)",-,LOCUPD,-,0,HG-E1
+2026-03-14T21:02:40,H-01,"F. Arden",IN,SMS,555-0109,0,HG-W2
+2026-03-14T21:06:42,H-02,"M. Quill",-,LOCUPD,-,0,TWN-2
+2026-03-14T21:15:08,H-03,"S. Brennick (contractor)",-,LOCUPD,-,0,TWN-9
+2026-03-14T21:26:00,H-03,"S. Brennick (contractor)",OUT,DATA,apn.station,346,TWN-9
+2026-03-14T21:27:18,H-02,"M. Quill",-,LOCUPD,-,0,RTE-2
+2026-03-14T21:30:10,H-01,"F. Arden",OUT,DATA,apn.station,387,HG-W2
+2026-03-14T21:40:50,H-05,"D. Lind",IN,SMS,555-0109,0,TWN-1
+2026-03-14T21:41:24,H-01,"F. Arden",-,LOCUPD,-,0,HG-E1
+2026-03-14T21:45:13,H-02,"M. Quill",-,LOCUPD,-,0,HG-E1
+2026-03-14T21:49:22,H-01,"F. Arden",-,LOCUPD,-,0,RTE-2
+2026-03-14T21:50:49,H-03,"S. Brennick (contractor)",-,LOCUPD,-,0,RTE-4
+2026-03-14T21:54:40,H-01,"F. Arden",OUT,DATA,apn.station,415,RTE-2
+2026-03-14T22:00:12,H-05,"D. Lind",-,LOCUPD,-,0,TWN-1
+2026-03-14T22:02:31,H-03,"S. Brennick (contractor)",OUT,DATA,apn.station,218,RTE-4
+2026-03-14T22:05:51,H-04,"Guard desk (R. Okoye)",-,LOCUPD,-,0,HG-W2
+2026-03-14T22:08:08,H-01,"F. Arden",-,LOCUPD,-,0,TWN-4
+2026-03-14T22:09:35,H-03,"S. Brennick (contractor)",OUT,DATA,apn.station,71,RTE-4
+2026-03-14T22:10:39,H-04,"Guard desk (R. Okoye)",-,LOCUPD,-,0,HG-E1
+2026-03-14T22:12:49,H-02,"M. Quill",-,LOCUPD,-,0,HG-W2
+2026-03-14T22:21:58,H-01,"F. Arden",OUT,DATA,apn.station,222,TWN-4
+2026-03-14T22:25:23,H-02,"M. Quill",-,LOCUPD,-,0,HG-E1
+2026-03-14T22:31:02,H-01,"F. Arden",OUT,SMS,555-0131,0,TWN-4
+2026-03-14T22:50:18,H-03,"S. Brennick (contractor)",OUT,VOICE,555-0120,71,RTE-4
+2026-03-14T22:58:22,H-03,"S. Brennick (contractor)",-,LOCUPD,-,0,RTE-9
+2026-03-14T23:00:31,H-05,"D. Lind",-,LOCUPD,-,0,TWN-1
+2026-03-14T23:05:44,H-05,"D. Lind",OUT,DATA,apn.station,171,TWN-1
+2026-03-14T23:08:47,H-01,"F. Arden",-,LOCUPD,-,0,TWN-4
+2026-03-14T23:10:44,H-04,"Guard desk (R. Okoye)",-,LOCUPD,-,0,HG-E1
+2026-03-14T23:14:55,H-01,"F. Arden",IN,SMS,555-0131,0,TWN-4
+2026-03-14T23:23:22,H-05,"D. Lind",OUT,DATA,apn.station,87,TWN-1
+2026-03-14T23:25:32,H-02,"M. Quill",-,LOCUPD,-,0,HG-E1
+2026-03-14T23:33:40,H-03,"S. Brennick (contractor)",OUT,SMS,H-02,0,RTE-9
+2026-03-14T23:33:48,H-02,"M. Quill",IN,SMS,H-03,0,HG-E1
+2026-03-14T23:34:19,H-03,"S. Brennick (contractor)",-,LOCUPD,-,0,HG-W2
+2026-03-14T23:36:09,H-02,"M. Quill",-,LOCUPD,-,0,HG-W2
+2026-03-14T23:47:09,H-03,"S. Brennick (contractor)",OUT,DATA,custody.scan,14,HG-W2
+2026-03-14T23:49:35,H-02,"M. Quill",OUT,DATA,apn.station,347,HG-W2
+2026-03-14T23:51:14,H-04,"Guard desk (R. Okoye)",OUT,DATA,apn.station,187,HG-E1
+2026-03-14T23:52:26,H-03,"S. Brennick (contractor)",OUT,DATA,custody.scan,12,HG-W2
+2026-03-14T23:58:17,H-02,"M. Quill",-,LOCUPD,-,0,HG-E1
+2026-03-15T00:00:47,H-05,"D. Lind",-,LOCUPD,-,0,TWN-1
+2026-03-15T00:03:24,H-03,"S. Brennick (contractor)",OUT,DATA,apn.station,216,HG-W2
+2026-03-15T00:05:49,H-04,"Guard desk (R. Okoye)",-,LOCUPD,-,0,HG-W2
+2026-03-15T00:08:37,H-01,"F. Arden",-,LOCUPD,-,0,TWN-4
+2026-03-15T00:10:37,H-04,"Guard desk (R. Okoye)",-,LOCUPD,-,0,HG-E1
+2026-03-15T00:19:38,H-03,"S. Brennick (contractor)",-,LOCUPD,-,0,RTE-9
+2026-03-15T00:25:50,H-05,"D. Lind",OUT,DATA,apn.station,126,TWN-1
+2026-03-15T00:41:33,H-03,"S. Brennick (contractor)",OUT,VOICE,555-0120,48,RTE-9
+2026-03-15T00:58:36,H-02,"M. Quill",-,LOCUPD,-,0,HG-E1
+2026-03-15T01:00:12,H-05,"D. Lind",-,LOCUPD,-,0,TWN-1
+2026-03-15T01:08:15,H-01,"F. Arden",-,LOCUPD,-,0,TWN-4
+2026-03-15T01:10:09,H-04,"Guard desk (R. Okoye)",-,LOCUPD,-,0,HG-E1
+2026-03-15T01:16:43,H-01,"F. Arden",OUT,DATA,apn.station,97,TWN-4
+2026-03-15T01:19:32,H-03,"S. Brennick (contractor)",-,LOCUPD,-,0,RTE-9
+2026-03-15T01:22:37,H-04,"Guard desk (R. Okoye)",OUT,DATA,apn.station,54,HG-E1
+2026-03-15T01:37:13,H-03,"S. Brennick (contractor)",-,LOCUPD,-,0,RTE-11
+2026-03-15T01:39:39,H-05,"D. Lind",OUT,DATA,apn.station,387,TWN-1
+2026-03-15T01:43:01,H-02,"M. Quill",OUT,DATA,apn.station,201,HG-E1
+2026-03-15T01:48:26,H-04,"Guard desk (R. Okoye)",OUT,DATA,apn.station,173,HG-E1
+2026-03-15T01:52:17,H-04,"Guard desk (R. Okoye)",IN,VOICE,555-0187,2460,HG-E1
+2026-03-15T02:00:51,H-05,"D. Lind",-,LOCUPD,-,0,TWN-1
+2026-03-15T02:02:44,H-02,"M. Quill",-,LOCUPD,-,0,HG-W2
+2026-03-15T02:08:43,H-01,"F. Arden",-,LOCUPD,-,0,TWN-4
+2026-03-15T02:10:32,H-04,"Guard desk (R. Okoye)",-,LOCUPD,-,0,HG-E1
+2026-03-15T02:21:06,H-01,"F. Arden",OUT,DATA,apn.station,184,TWN-4
+2026-03-15T02:29:11,H-02,"M. Quill",OUT,SMS,555-0163,0,HG-W2
+2026-03-15T02:32:09,H-02,"M. Quill",-,LOCUPD,-,0,HG-E1
+2026-03-15T02:36:52,H-02,"M. Quill",IN,SMS,555-0163,0,HG-E1
+2026-03-15T02:37:47,H-03,"S. Brennick (contractor)",-,LOCUPD,-,0,RTE-11
+2026-03-15T03:00:18,H-05,"D. Lind",-,LOCUPD,-,0,TWN-1
+2026-03-15T03:08:42,H-01,"F. Arden",-,LOCUPD,-,0,TWN-4
+2026-03-15T03:09:24,H-04,"Guard desk (R. Okoye)",OUT,DATA,apn.station,87,HG-E1
+2026-03-15T03:10:28,H-03,"S. Brennick (contractor)",-,LOCUPD,-,0,RTE-14
+2026-03-15T03:10:32,H-04,"Guard desk (R. Okoye)",-,LOCUPD,-,0,HG-E1
+2026-03-15T03:25:29,H-05,"D. Lind",OUT,DATA,apn.station,367,TWN-1
+2026-03-15T03:32:39,H-02,"M. Quill",-,LOCUPD,-,0,HG-E1
+2026-03-15T03:36:57,H-05,"D. Lind",OUT,DATA,apn.station,145,TWN-1
+2026-03-15T03:39:10,H-03,"S. Brennick (contractor)",OUT,DATA,apn.station,194,RTE-14
+2026-03-15T03:46:17,H-03,"S. Brennick (contractor)",OUT,DATA,apn.station,403,RTE-14
+2026-03-15T03:55:15,H-03,"S. Brennick (contractor)",IN,VOICE,555-0120,36,RTE-14
+2026-03-15T04:00:37,H-05,"D. Lind",-,LOCUPD,-,0,TWN-1
+2026-03-15T04:05:10,H-04,"Guard desk (R. Okoye)",-,LOCUPD,-,0,HG-W2
+2026-03-15T04:08:42,H-01,"F. Arden",-,LOCUPD,-,0,TWN-4
+2026-03-15T04:10:40,H-03,"S. Brennick (contractor)",-,LOCUPD,-,0,RTE-14
+2026-03-15T04:10:54,H-04,"Guard desk (R. Okoye)",-,LOCUPD,-,0,HG-E1
+2026-03-15T04:32:29,H-02,"M. Quill",-,LOCUPD,-,0,HG-E1
+2026-03-15T04:47:17,H-02,"M. Quill",OUT,DATA,apn.station,119,HG-E1
+2026-03-15T05:00:10,H-05,"D. Lind",-,LOCUPD,-,0,TWN-1
+2026-03-15T05:08:17,H-01,"F. Arden",-,LOCUPD,-,0,TWN-4
+2026-03-15T05:10:10,H-03,"S. Brennick (contractor)",-,LOCUPD,-,0,RTE-14
+2026-03-15T05:10:35,H-04,"Guard desk (R. Okoye)",-,LOCUPD,-,0,HG-E1
+2026-03-15T05:20:03,H-04,"Guard desk (R. Okoye)",OUT,DATA,apn.station,350,HG-E1
+2026-03-15T05:20:07,H-03,"S. Brennick (contractor)",-,LOCUPD,-,0,TWN-9
+2026-03-15T05:31:02,H-03,"S. Brennick (contractor)",OUT,DATA,custody.scan,11,TWN-9
+2026-03-15T05:32:39,H-02,"M. Quill",-,LOCUPD,-,0,HG-E1
+2026-03-15T05:37:33,H-01,"F. Arden",OUT,DATA,apn.station,185,TWN-4
+2026-03-15T05:45:13,H-02,"M. Quill",-,LOCUPD,-,0,HG-W2
+2026-03-15T05:49:27,H-04,"Guard desk (R. Okoye)",OUT,DATA,apn.station,297,HG-E1
+2026-03-15T05:52:04,H-02,"M. Quill",OUT,VOICE,H-04,64,HG-W2
+2026-03-15T05:52:04,H-04,"Guard desk (R. Okoye)",IN,VOICE,H-02,64,HG-E1
+2026-03-15T05:56:43,H-02,"M. Quill",-,LOCUPD,-,0,HG-E1
+2026-03-15T05:58:30,H-04,"Guard desk (R. Okoye)",OUT,VOICE,H-05,142,HG-E1
+2026-03-15T05:58:30,H-05,"D. Lind",IN,VOICE,H-04,142,TWN-1
+2026-03-15T06:00:46,H-05,"D. Lind",-,LOCUPD,-,0,TWN-1
+2026-03-15T06:05:10,H-01,"F. Arden",IN,VOICE,H-05,96,TWN-4
+2026-03-15T06:05:10,H-05,"D. Lind",OUT,VOICE,H-01,96,TWN-1
+2026-03-15T06:08:42,H-01,"F. Arden",-,LOCUPD,-,0,TWN-4
+2026-03-15T06:09:49,H-05,"D. Lind",OUT,DATA,apn.station,31,TWN-1
+2026-03-15T06:10:06,H-04,"Guard desk (R. Okoye)",-,LOCUPD,-,0,HG-E1
+2026-03-15T06:20:32,H-03,"S. Brennick (contractor)",-,LOCUPD,-,0,TWN-9
+2026-03-15T06:22:30,H-05,"D. Lind",-,LOCUPD,-,0,RTE-2
+2026-03-15T06:38:13,H-05,"D. Lind",-,LOCUPD,-,0,HG-E1
+2026-03-15T06:41:11,H-01,"F. Arden",OUT,DATA,apn.station,351,TWN-4
