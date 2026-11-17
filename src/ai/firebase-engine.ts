@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from 'firebase/app-check';
 import {
   getAI,
   getGenerativeModel,
@@ -45,7 +45,7 @@ export class FirebaseEngine implements AiEngine {
     if (settings.appCheckDebug) self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
     const app = initializeApp(settings.firebase);
     initializeAppCheck(app, {
-      provider: new ReCaptchaV3Provider(settings.recaptchaSiteKey),
+      provider: new ReCaptchaEnterpriseProvider(settings.recaptchaSiteKey),
       isTokenAutoRefreshEnabled: true,
     });
     const ai = getAI(app, { backend: new GoogleAIBackend() });

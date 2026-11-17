@@ -86,7 +86,7 @@ All AI inference goes through the [Firebase AI Logic](https://firebase.google.co
 | `VITE_FIREBASE_AUTH_DOMAIN` | no | Defaults to `<project>.firebaseapp.com` |
 | `VITE_FIREBASE_STORAGE_BUCKET` | no | |
 | `VITE_FIREBASE_MESSAGING_SENDER_ID` | no | |
-| `VITE_RECAPTCHA_SITE_KEY` | yes | reCAPTCHA v3 site key for App Check |
+| `VITE_RECAPTCHA_SITE_KEY` | yes | reCAPTCHA Enterprise (Fraud Defense) site key for App Check |
 | `VITE_APPCHECK_DEBUG` | no | `1` in local development to use an App Check debug token |
 | `VITE_CLOUD_MODEL` | no | Cloud model, default `gemini-3.5-flash-lite` |
 | `VITE_BASE` | no | Base path, e.g. `/cold-case-lab/` for GitHub Pages |
@@ -95,10 +95,10 @@ If any required value is missing, the app runs the demo engine and says so on th
 
 ### App Check
 
-AI Logic calls are protected with [App Check](https://firebase.google.com/docs/app-check) using reCAPTCHA v3:
+AI Logic calls are protected with [App Check](https://firebase.google.com/docs/app-check) using reCAPTCHA Enterprise (Fraud Defense in the Firebase console):
 
-1. Create a reCAPTCHA v3 key for your domain(s) and put the site key in `VITE_RECAPTCHA_SITE_KEY`.
-2. In the Firebase console, open **App Check**, register the web app with the reCAPTCHA v3 provider (secret key), then **enforce** App Check for AI Logic.
+1. In Google Cloud, create a score-based reCAPTCHA Enterprise **Web** key for your domain(s) and `localhost` (no checkbox challenge), and put its id in `VITE_RECAPTCHA_SITE_KEY`.
+2. In the Firebase console, open **App Check**, register the web app with the **Fraud Defense** provider using the same site key, then **enforce** App Check for AI Logic. (The classic reCAPTCHA v3 provider is deprecated in the console.)
 3. For local development, set `VITE_APPCHECK_DEBUG=1`. The app then sets `self.FIREBASE_APPCHECK_DEBUG_TOKEN = true` before `initializeAppCheck`, and the SDK prints a debug token in the browser console. Register it under **App Check, Apps, Manage debug tokens**.
 
 ### Gemini Nano in Chrome
